@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Test from './Test';
+import Animator from './Animator';
 
 
 
 ReactDOM.render(
   <React.StrictMode>
     <App/>
+    {/* <Animator/> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

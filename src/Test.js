@@ -56,12 +56,16 @@ class Test extends React.Component {
         }, () => {
             this.state.matrix[data == 'o' ? 'o' : 'x'].push(id);
             if (this.state.matrix.o.length >= 3) {
-                if (this.diff("o")) alert('O wins');
-                this.clear();
+                if (this.diff("o")) {
+                    // alert('O wins');
+                    this.clear();
+                }
             }
-            if(this.state.matrix.x.length >= 3) {
-                if (this.diff("x")) alert('X wins');
-                this.clear();
+            if (this.state.matrix.x.length >= 3) {
+                if (this.diff("x")) {
+                    alert('X wins');
+                    this.clear();
+                }
             }
         });
 
@@ -77,7 +81,7 @@ class Test extends React.Component {
             c2: { value: [2, 5, 8], count: 0 },
             c3: { value: [3, 6, 9], count: 0 },
             d1: { value: [3, 5, 7], count: 0 },
-            d2: { value: [1, 5, 9], count: 0 },                
+            d2: { value: [1, 5, 9], count: 0 },
 
         };
         var result = false;
@@ -91,14 +95,14 @@ class Test extends React.Component {
                 result = true;
                 return false;
             }
-            
+
         });
 
         return result;
     }
-    clear(){
-        this.state.matrix.o=[];
-        this.state.matrix.x=[];
+    clear() {
+        this.state.matrix.o = [];
+        this.state.matrix.x = [];
         this.setState({
             el: null
         });
