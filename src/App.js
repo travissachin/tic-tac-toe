@@ -1,6 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import Test from './Test';
+import React from 'react';
+import Board from './Board';
+
+import Fireworker from './dummy/Fireworker';
 
 // function App() {
 //   return (
@@ -22,10 +25,16 @@ import Test from './Test';
 //     </div>
 //   );
 // }
-function App(props) {
-  return (
-    <Test/>
-  );
+class App extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return(
+      <Board/>
+     
+    );
+  }
 }
 
 

@@ -4,8 +4,9 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Paper from '@material-ui/core/Paper';
 import tileData from './dummy/tile';
-
 import Square from './Square';
+import Firework from './dummy/firework';
+
 
 
 const styles = (theme) => ({
@@ -14,27 +15,41 @@ const styles = (theme) => ({
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper,
+        width: "100%",
+        height: "100vh",
+        // backgroundColor: theme.palette.background.paper,
     },
     gridList: {
-        width: "45%",
-        height: "100%",
+        width: "50%",
     },
     paper: {
         display: "flex",
         width: "100%",
         height: "100%",
-        background: "#80ced6",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        background: "#8aacc8",
+        color: "white"
     },
     square: {
         minWidth: "100%",
         minHeight: "100%"
+    },
+    canvas: {
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        margin: "auto",
+        display: "block"
+        // textAlign: center
+    },
+    hidden: {
+        display: "none"
     }
 });
-class Test extends React.Component {
+class Board extends React.Component {
 
 
     constructor(props) {
@@ -46,29 +61,55 @@ class Test extends React.Component {
             matrix: {
                 o: [],
                 x: [],
-            }
+            },
+            winner: false
         };
         this.value = null;
+        this.firework = null;
+
+        this.fw = React.createRef();
+    }
+    componentDidMount() {
+        this.firework = new Firework(this.fw.current);
     }
     handler(data, id) {
         this.setState({
-            el: data
+            el: data,
+            winner: false
         }, () => {
             this.state.matrix[data == 'o' ? 'o' : 'x'].push(id);
             if (this.state.matrix.o.length >= 3) {
                 if (this.diff("o")) {
-                    // alert('O wins');
-                    this.clear();
+                    this.setState({
+                        winner: true
+                    });
+                    this.winner("O");
+                    // this.clear();
                 }
             }
             if (this.state.matrix.x.length >= 3) {
                 if (this.diff("x")) {
-                    alert('X wins');
-                    this.clear();
+                    this.setState({
+                        winner: true
+                    });
+                    this.winner("X");
+                    // this.clear();
                 }
             }
         });
+    }
+    winner = (win) => {
+        alert(win + " Won");
+        this.firework.autoClick();
+        this.firework.setCanvasSize();
+        setTimeout(() => {
+            var r = window.confirm("One more time?");
+            if (r == true) {
+                this.clear();
+            }
+        }, 3000);
 
+        // window.addEventListener('resize', this.firework.setCanvasSize, false);
 
 
     }
@@ -104,7 +145,8 @@ class Test extends React.Component {
         this.state.matrix.o = [];
         this.state.matrix.x = [];
         this.setState({
-            el: null
+            el: null,
+            winner: false
         });
     }
 
@@ -123,6 +165,7 @@ class Test extends React.Component {
                         </GridListTile>
                     ))}
                 </GridList>
+                <canvas className="fireworks" ref={this.fw} className={this.state.winner ? classes.canvas : classes.hidden}></canvas>
             </div>
         );
     }
@@ -131,4 +174,4 @@ class Test extends React.Component {
     }
 }
 
-export default withStyles(styles)(Test)
+export default withStyles(styles)(Board)

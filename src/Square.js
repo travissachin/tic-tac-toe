@@ -4,13 +4,14 @@ import anime from 'animejs/lib/anime.es.js';
 import { ReactComponent as LetterO } from './svg/letter-o.svg';
 import { ReactComponent as LetterX } from './svg/letter-x.svg';
 
+import Firework from './dummy/firework';
 const styles = (theme) => ({
     el: {
         height: "100%",
         width: "100%",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     svg: {
         width: 100,
@@ -26,10 +27,15 @@ class Square extends React.Component {
         });
         this.myRef = React.createRef();
         this.update = this.update.bind(this);
+        
+    }
+    componentDidMount(){
+        // this.firework= new Firework(this.myRef.current);
+
+        
     }
     componentDidUpdate(prevProps) {
         if (this.props.el === null && prevProps.el !== null) {
-            console.log(this.props.el, prevProps.el);
             this.setState({
                 data: null
             });
@@ -40,15 +46,13 @@ class Square extends React.Component {
             data: this.props.el === 'o' ? 'x' : 'o' || 'o'
         }, () => {
             let el = this.myRef.current;
-            // anime({
-            //     targets: el,
-            //     translateX: path('x'),
-            //     translateY: path('y'),
-            //     rotate: path('angle'),
-            //     easing: 'linear',
-            //     duration: 2000,
-            //     loop: true
-            //   });
+            anime({
+                targets: el,
+                translateX: 50,
+                endDelay: 50,
+                direction: 'alternate',
+                loop: true
+              });
             this.props.handler(this.state.data, this.props.id);
         });
     }
@@ -62,6 +66,7 @@ class Square extends React.Component {
             <div onClick={this.update} className={classes.el} ref={this.myRef}>
                 { letter === undefined ? '' : letter}
             </div>
+            
         );
     }
 }
