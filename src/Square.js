@@ -27,12 +27,12 @@ class Square extends React.Component {
         });
         this.myRef = React.createRef();
         this.update = this.update.bind(this);
-        
+
     }
-    componentDidMount(){
+    componentDidMount() {
         // this.firework= new Firework(this.myRef.current);
 
-        
+
     }
     componentDidUpdate(prevProps) {
         if (this.props.el === null && prevProps.el !== null) {
@@ -46,13 +46,32 @@ class Square extends React.Component {
             data: this.props.el === 'o' ? 'x' : 'o' || 'o'
         }, () => {
             let el = this.myRef.current;
+            // anime({
+            //     targets: el,
+            //     translateX: 50,
+            //     endDelay: 50,
+            //     direction: 'alternate',
+            //     loop: true
+            //   });
             anime({
                 targets: el,
-                translateX: 50,
-                endDelay: 50,
+                translateX: {
+                    value: '*=2.5', // 100px * 2.5 = '250px'
+                    duration: 1000
+                },
+                width: {
+                    value: '-=20px', // 28 - 20 = '8px'
+                    duration: 1800,
+                    easing: 'easeInOutSine'
+                },
+                rotate: {
+                    value: '+=2turn', // 0 + 2 = '2turn'
+                    duration: 1800,
+                    easing: 'easeInOutSine'
+                },
                 direction: 'alternate',
                 loop: true
-              });
+            })
             this.props.handler(this.state.data, this.props.id);
         });
     }
@@ -66,7 +85,7 @@ class Square extends React.Component {
             <div onClick={this.update} className={classes.el} ref={this.myRef}>
                 { letter === undefined ? '' : letter}
             </div>
-            
+
         );
     }
 }
